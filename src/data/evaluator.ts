@@ -382,7 +382,17 @@ function getDefaultFollowUp(
   appropriatenessScore: number
 ): string {
   const lower = studentResponse.toLowerCase();
+  const titleLower = scenarioTitle.toLowerCase();
   const isTeacher = partnerName.startsWith('Cô') || partnerName.startsWith('Thầy');
+
+  // Make offline/server-failure responses specific to the active scenario.
+  if (appropriatenessScore === 0 && titleLower.includes('chép bài')) {
+    return `${partnerName} ngập ngừng rồi nói: “Tớ biết cậu muốn giúp, nhưng nghĩ lại mình không nên chép bài trong giờ kiểm tra. Tớ sẽ tự làm phần còn lại nhé.”`;
+  }
+
+  if (politenessScore === 0 && (titleLower.includes('chuyển trường') || titleLower.includes('làm quen'))) {
+    return `${partnerName} hơi sững lại và buồn bã nói: “Mình chỉ muốn làm quen thôi. Nếu bạn không muốn trò chuyện thì có thể nói nhẹ nhàng hơn mà...”`;
+  }
 
   if (politenessScore === 0) {
     if (isTeacher) {
